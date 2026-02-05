@@ -355,6 +355,135 @@ a {
   color: var(--muted);
 }
 
+.extinguisher-content {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: 40px;
+}
+
+.extinguisher-info h3 {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.extinguisher-info h4 {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.service-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.service-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+}
+
+.service-list li:last-child {
+  border-bottom: none;
+}
+
+.service-list strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.extinguisher-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.extinguisher-types li {
+  padding: 10px 16px;
+  background: rgba(198, 40, 40, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+  font-weight: 500;
+}
+
+.extinguisher-brands {
+  background: linear-gradient(135deg, #ffffff, #fef5f5);
+  border-radius: 20px;
+  padding: 28px;
+  border: 2px solid rgba(198, 40, 40, 0.15);
+  box-shadow: var(--shadow);
+}
+
+.extinguisher-brands h4 {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.brand-logos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.brand-logos img {
+  max-height: 60px;
+  max-width: 180px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.brand-logos img:hover {
+  transform: scale(1.05);
+}
+
+.brands-note {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.compliance-note {
+  background: linear-gradient(135deg, rgba(255, 179, 0, 0.1), rgba(198, 40, 40, 0.05));
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+
+.compliance-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.compliance-note strong {
+  color: var(--primary);
+}
+
+@media (max-width: 880px) {
+  .extinguisher-content {
+    grid-template-columns: 1fr;
+  }
+
+  .extinguisher-types {
+    grid-template-columns: 1fr;
+  }
+}
+
 .split {
   display: grid;
   gap: 40px;
