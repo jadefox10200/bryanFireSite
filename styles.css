@@ -455,6 +455,11 @@ a {
   gap: 8px;
   font-weight: 600;
   color: var(--text);
+  transition: transform 0.3s ease;
+}
+
+.contact-form label.focused {
+  transform: translateX(4px);
 }
 
 .contact-form input,

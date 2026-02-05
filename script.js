@@ -14,7 +14,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Header shadow on scroll
 const header = document.querySelector('.site-header');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
   const currentScroll = window.pageYOffset;
@@ -24,8 +23,6 @@ window.addEventListener('scroll', () => {
   } else {
     header.classList.remove('scrolled');
   }
-  
-  lastScroll = currentScroll;
 });
 
 // Intersection Observer for fade-in animations
@@ -158,21 +155,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Add number counter animation for stats (if needed in future)
-function animateCounter(element, target, duration = 2000) {
-  let start = 0;
-  const increment = target / (duration / 16);
-  const timer = setInterval(() => {
-    start += increment;
-    if (start >= target) {
-      element.textContent = target;
-      clearInterval(timer);
-    } else {
-      element.textContent = Math.floor(start);
-    }
-  }, 16);
-}
-
 // Form validation and feedback
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
@@ -200,11 +182,11 @@ if (contactForm) {
   const formInputs = contactForm.querySelectorAll('input, textarea');
   formInputs.forEach(input => {
     input.addEventListener('focus', function() {
-      this.parentElement.style.transform = 'translateX(4px)';
+      this.parentElement.classList.add('focused');
     });
     
     input.addEventListener('blur', function() {
-      this.parentElement.style.transform = 'translateX(0)';
+      this.parentElement.classList.remove('focused');
     });
   });
 }
