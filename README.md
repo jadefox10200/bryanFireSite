@@ -36,7 +36,9 @@ This is the official website for Bryan Fire & Safety Inc, serving the San Jose B
    go run main.go
    ```
 
-The server will start on `http://localhost:8080`
+The server will start on `http://localhost:8080` for local development.
+
+**Note:** In production, the server runs on HTTP internally (localhost:8080) while Nginx handles HTTPS externally. See "HTTPS Setup for Production Website" section below for deployment details.
 
 ## Production Deployment on Digital Ocean
 
@@ -128,13 +130,78 @@ WantedBy=multi-user.target
    sudo systemctl start bryanfire
    ```
 
-8. Set up Nginx as reverse proxy (recommended) or configure firewall to allow port 8080
+8. **CRITICAL FOR PRODUCTION**: Configure HTTPS for bryanfire.com (see HTTPS Setup below)
+
+### HTTPS Setup for Production Website
+
+**Why HTTPS is Required:**
+As a professional fire safety company serving Bay Area businesses, bryanfire.com must use HTTPS to:
+- Protect customer contact form data (names, emails, phone numbers)
+- Build trust with commercial clients
+- Meet modern browser security standards
+- Improve SEO rankings for fire safety services in San Jose
+
+**Recommended Approach: Nginx Reverse Proxy with Certbot**
+
+This setup keeps your Go application simple while Nginx handles HTTPS encryption.
+
+**Step 1: Install Nginx and Certbot on your Digital Ocean droplet**
+```bash
+sudo apt update
+sudo apt install nginx certbot python3-certbot-nginx
+```
+
+**Step 2: Create Nginx configuration for bryanfire.com**
+
+Create file: `/etc/nginx/sites-available/bryanfire`
+```nginx
+server {
+    server_name bryanfire.com www.bryanfire.com;
+    
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+**Step 3: Enable the configuration**
+```bash
+sudo ln -s /etc/nginx/sites-available/bryanfire /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+**Step 4: Obtain free SSL certificate from Let's Encrypt**
+```bash
+sudo certbot --nginx -d bryanfire.com -d www.bryanfire.com
+```
+
+Certbot will automatically:
+- Obtain SSL certificates for your domain
+- Update Nginx configuration to use HTTPS
+- Set up automatic certificate renewal
+
+**Step 5: Verify HTTPS is working**
+- Visit https://bryanfire.com in your browser
+- Check for the padlock icon showing secure connection
+- Test the contact form to ensure it works over HTTPS
+
+**Certificate Auto-Renewal:**
+Certbot sets up a systemd timer to automatically renew certificates before expiration. Verify with:
+```bash
+sudo systemctl status certbot.timer
+```
 
 ### Domain Configuration on Porkbun
 
-1. Point your A record to your Digital Ocean droplet IP
-2. Set up email forwarding as described above
-3. Consider setting up SSL/TLS with Let's Encrypt
+1. Point your A record to your Digital Ocean droplet IP address
+2. Point www subdomain to same IP (A record or CNAME)
+3. Configure email forwarding: info@bryanfire.com → bryanfiresafetyinc@gmail.com
+4. After DNS propagates (may take up to 48 hours), run Certbot as shown above
 
 ## API Endpoints
 
