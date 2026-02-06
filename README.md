@@ -191,9 +191,14 @@ Certbot will automatically:
 - Test the contact form to ensure it works over HTTPS
 
 **Certificate Auto-Renewal:**
-Certbot sets up a systemd timer to automatically renew certificates before expiration. Verify with:
+Certbot sets up a systemd timer to automatically renew certificates before expiration. Verify the timer is active:
 ```bash
 sudo systemctl status certbot.timer
+```
+
+Test that renewal will work when needed:
+```bash
+sudo certbot renew --dry-run
 ```
 
 ### Domain Configuration on Porkbun
@@ -201,7 +206,7 @@ sudo systemctl status certbot.timer
 1. Point your A record to your Digital Ocean droplet IP address
 2. Point www subdomain to same IP (A record or CNAME)
 3. Configure email forwarding: info@bryanfire.com → bryanfiresafetyinc@gmail.com
-4. After DNS propagates (may take up to 48 hours), run Certbot as shown above
+4. After DNS propagates (may take up to 48 hours), obtain SSL certificates using Step 4 from the HTTPS Setup section above
 
 ## API Endpoints
 
