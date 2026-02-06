@@ -13,7 +13,7 @@ This is the official website for Bryan Fire & Safety Inc, serving the San Jose B
 
 ### Prerequisites
 
-- Go 1.23 or higher
+- Go 1.23+ (tested with Go 1.24)
 - SMTP credentials for sending emails
 
 ### Setup
