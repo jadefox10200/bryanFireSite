@@ -1,0 +1,13 @@
+[Unit]
+Description=Bryan Fire Safety Go Server
+After=network.target
+
+[Service]
+WorkingDirectory=/root/bryanFireSite
+ExecStart=/root/bryanFireSite/bryanfire
+Restart=always
+RestartSec=3
+User=root
+
+[Install]
+WantedBy=multi-user.target
