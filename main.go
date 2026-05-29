@@ -17,7 +17,7 @@ type ServerConfig struct {
 
 func main() {
 	config := loadConfiguration()
-	
+
 	if os.Getenv("GIN_MODE") != "debug" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -31,7 +31,7 @@ func main() {
 
 	serverAddr := fmt.Sprintf(":%s", config.ListenPort)
 	log.Printf("Bryan Fire Safety server listening on %s", serverAddr)
-	
+
 	if err := engine.Run(serverAddr); err != nil {
 		log.Fatal("Server failed to start:", err)
 	}
@@ -50,10 +50,10 @@ func loadConfiguration() *ServerConfig {
 
 func setupRoutes(engine *gin.Engine) {
 	engine.Use(preventDirectoryTraversal())
-	
+
 	engine.GET("/", serveHomepage)
 	engine.GET("/health", healthCheck)
-	
+
 	assetHandler := createAssetHandler()
 	engine.GET("/styles.css", assetHandler)
 	engine.GET("/script.js", assetHandler)
@@ -70,23 +70,23 @@ func healthCheck(ctx *gin.Context) {
 
 func createAssetHandler() gin.HandlerFunc {
 	allowedExtensions := map[string]bool{
-		".css": true, ".js": true, ".png": true, 
+		".css": true, ".js": true, ".png": true,
 		".jpg": true, ".jpeg": true, ".svg": true,
 		".webp": true, ".ico": true, ".gif": true,
 	}
-	
+
 	return func(ctx *gin.Context) {
 		requestedFile := ctx.Param("filename")
 		if requestedFile == "" {
 			requestedFile = ctx.Request.URL.Path[1:]
 		}
-		
+
 		fileExt := path.Ext(requestedFile)
 		if !allowedExtensions[fileExt] {
 			ctx.Status(http.StatusNotFound)
 			return
 		}
-		
+
 		ctx.File("./" + requestedFile)
 	}
 }
@@ -94,13 +94,13 @@ func createAssetHandler() gin.HandlerFunc {
 func preventDirectoryTraversal() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		requestedPath := ctx.Request.URL.Path
-		
+
 		cleanPath := path.Clean(requestedPath)
 		if strings.Contains(cleanPath, "..") || cleanPath != requestedPath {
 			ctx.AbortWithStatus(http.StatusForbidden)
 			return
 		}
-		
+
 		pathSegments := strings.Split(strings.Trim(requestedPath, "/"), "/")
 		for _, segment := range pathSegments {
 			if strings.HasPrefix(segment, ".") {
@@ -108,7 +108,7 @@ func preventDirectoryTraversal() gin.HandlerFunc {
 				return
 			}
 		}
-		
+
 		ctx.Next()
 	}
 }
