@@ -5,7 +5,7 @@ This is the official website for Bryan Fire & Safety Inc, serving the San Jose B
 ## Features
 
 - Static website serving
-- Contact form with email notifications
+- Direct contact details for phone and email outreach
 - Security measures against path traversal attacks
 - Health check endpoint for monitoring
 
@@ -14,24 +14,16 @@ This is the official website for Bryan Fire & Safety Inc, serving the San Jose B
 ### Prerequisites
 
 - Go 1.23+ (tested with Go 1.24)
-- SMTP credentials for sending emails
 
 ### Setup
 
 1. Clone the repository
-2. Copy `.env.example` to `.env` and configure your SMTP settings:
-   ```bash
-   cp .env.example .env
-   ```
-
-3. Edit `.env` with your actual SMTP credentials
-
-4. Install dependencies:
+2. Install dependencies:
    ```bash
    go mod download
    ```
 
-5. Run the server:
+3. Run the server:
    ```bash
    go run main.go
    ```
@@ -41,36 +33,6 @@ The server will start on `http://localhost:8080` for local development.
 **Note:** In production, the server runs on HTTP internally (localhost:8080) while Nginx handles HTTPS externally. See "HTTPS Setup for Production Website" section below for deployment details.
 
 ## Production Deployment on Digital Ocean
-
-### Email Configuration
-
-For the contact form to work, you need to configure SMTP settings. Options include:
-
-1. **Gmail SMTP** (requires App Password):
-   - SMTP_HOST: smtp.gmail.com
-   - SMTP_PORT: 587
-   - SMTP_USER: your-gmail@gmail.com
-   - SMTP_PASS: your-app-specific-password
-
-2. **SendGrid**:
-   - SMTP_HOST: smtp.sendgrid.net
-   - SMTP_PORT: 587
-   - SMTP_USER: apikey
-   - SMTP_PASS: your-sendgrid-api-key
-
-3. **Mailgun**, **AWS SES**, or other SMTP providers
-
-### Email Forwarding Setup
-
-The email forwarding from `info@bryanfire.com` → `bryanfiresafetyinc@gmail.com` should be configured at your domain registrar (Porkbun):
-
-1. Log into Porkbun.com
-2. Go to your domain settings for bryanfire.com
-3. Set up email forwarding:
-   - From: info@bryanfire.com
-   - To: bryanfiresafetyinc@gmail.com
-
-This is handled at the DNS level and is separate from the web server.
 
 ### Deploying to Digital Ocean
 
@@ -83,11 +45,6 @@ This is handled at the DNS level and is separate from the web server.
 4. Set up environment variables:
    ```bash
    export PORT=8080
-   export SMTP_HOST=smtp.gmail.com
-   export SMTP_PORT=587
-   export SMTP_USER=your-email@gmail.com
-   export SMTP_PASS=your-password
-   export TO_EMAIL=info@bryanfire.com
    export GIN_MODE=release
    ```
 
@@ -110,11 +67,6 @@ Type=simple
 User=www-data
 WorkingDirectory=/path/to/bryanFireSite
 Environment="PORT=8080"
-Environment="SMTP_HOST=smtp.gmail.com"
-Environment="SMTP_PORT=587"
-Environment="SMTP_USER=your-email"
-Environment="SMTP_PASS=your-password"
-Environment="TO_EMAIL=info@bryanfire.com"
 Environment="GIN_MODE=release"
 ExecStart=/path/to/bryanFireSite/bryanfire
 Restart=always
@@ -136,7 +88,7 @@ WantedBy=multi-user.target
 
 **Why HTTPS is Required:**
 As a professional fire safety company serving Bay Area businesses, bryanfire.com must use HTTPS to:
-- Protect customer contact form data (names, emails, phone numbers)
+- Protect customer contact details and business communications
 - Build trust with commercial clients
 - Meet modern browser security standards
 - Improve SEO rankings for fire safety services in San Jose
@@ -188,7 +140,7 @@ Certbot will automatically:
 **Step 5: Verify HTTPS is working**
 - Visit https://bryanfire.com in your browser
 - Check for the padlock icon showing secure connection
-- Test the contact form to ensure it works over HTTPS
+- Test site pages and contact links over HTTPS
 
 **Certificate Auto-Renewal:**
 Certbot sets up a systemd timer to automatically renew certificates before expiration. Verify the timer is active:
@@ -211,7 +163,6 @@ sudo certbot renew --dry-run
 ## API Endpoints
 
 - `GET /` - Serves the homepage
-- `POST /contact` - Handles contact form submissions
 - `GET /health` - Health check endpoint
 - `GET /{filename}` - Serves static assets (CSS, JS, images)
 
@@ -221,7 +172,6 @@ sudo certbot renew --dry-run
 - Hidden file blocking (dotfiles)
 - Source code access prevention
 - MIME type restrictions for static files
-- Input validation on contact forms
 
 ## License
 
