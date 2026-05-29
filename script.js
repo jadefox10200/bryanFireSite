@@ -70,10 +70,6 @@ document.querySelectorAll('.highlight-card').forEach(card => {
   fadeInObserver.observe(card);
 });
 
-// Observe contact form
-document.querySelectorAll('.contact-form').forEach(form => {
-  fadeInObserver.observe(form);
-});
 
 // Parallax effect for hero
 let ticking = false;
@@ -154,42 +150,6 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
-// Form validation and feedback
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    // You can add custom validation here
-    const inputs = contactForm.querySelectorAll('input, textarea');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-      if (input.hasAttribute('required') && !input.value.trim()) {
-        isValid = false;
-        input.style.borderColor = 'var(--primary)';
-        setTimeout(() => {
-          input.style.borderColor = '';
-        }, 2000);
-      }
-    });
-    
-    if (!isValid) {
-      e.preventDefault();
-    }
-  });
-  
-  // Add focus animations
-  const formInputs = contactForm.querySelectorAll('input, textarea');
-  formInputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.classList.add('focused');
-    });
-    
-    input.addEventListener('blur', function() {
-      this.parentElement.classList.remove('focused');
-    });
-  });
-}
 
 // Add loading animation class
 document.addEventListener('DOMContentLoaded', () => {
