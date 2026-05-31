@@ -73,6 +73,7 @@ func createAssetHandler() gin.HandlerFunc {
 		".css": true, ".js": true, ".png": true,
 		".jpg": true, ".jpeg": true, ".svg": true,
 		".webp": true, ".ico": true, ".gif": true,
+		".xml": true, ".txt": true,
 	}
 
 	return func(ctx *gin.Context) {
